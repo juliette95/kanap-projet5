@@ -105,7 +105,7 @@ if (stockageInfoProduits){
         
             }  
     }
-}else {   // sinon aucun produit n'est enregistré , ajouter cet array []
+}else {   // sinon aucun produit n'est enregistré , ajouter cet array 
    var panierProduct = []
     var myPanierProduits = {
         idPanierProduits : id,
