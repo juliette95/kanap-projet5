@@ -54,19 +54,4 @@ const getProduct = async () => {
 }
 
 getProduct()
-
-
-//step 5
-//const searchParams = new URLSearchParams(paramsString);
-//for (let p of searchParams) {
- //  console.log(p);
-//}
-
-
-//collect query string (récupération chaine de requète dans l'URL)  
-
-const queryString_url_id = window.location.search; 
-console.log(queryString_url_id);
-
-//const idproducts = urlSearchParams.get("productId"); 
-//console.log(idproducts);
+//--------------------------------------------------------------------
