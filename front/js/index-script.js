@@ -1,26 +1,5 @@
 
 
-    
-
-/* test 3 : fonctionne jusqu'a l'étape data . */ 
-     /* fetch("http://localhost:3000/api/products/")
-         .then (response => response.json())
-         .then (data => console.log(data['0','1','2','3','4','5','6','7']//que mettre ? imageUrl ? _id ? length ? car rien ne s'affiche
-            )) 
-
-
-   
-            /*fetch("http://localhost:3000/api/products")
-            .then (response => response.json())
-            .then (data => {
-                  items.onclick = () => {
-
-                  }
-
-            })*/
-
-
-
 let items = document.getElementById("items")
 
 const injectProductsIntoDOM = (products) => {
@@ -54,4 +33,3 @@ const getProduct = async () => {
 }
 
 getProduct()
-//--------------------------------------------------------------------
