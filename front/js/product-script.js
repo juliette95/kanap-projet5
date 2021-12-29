@@ -41,7 +41,7 @@ const injectProduct = (produit)=>{
     imgProductPage.src = produit.imageUrl  
 
 }
-//----------------------------
+
 let quantite = document.getElementById('quantity');
 let bouton = document.getElementById('addToCart'); 
 
@@ -57,13 +57,9 @@ function validNumber(){ // function in order that the quantite value does not ex
 // register [id product+quantity product+color product]in array 
 var boutonProductToCart = document.getElementById('addToCart'); 
 
-/*function loadNewPage(url){
-    window.location= url; 
-}; */
-
-
 boutonProductToCart.addEventListener('click', function(){
     validNumber()
+
 //--------Déclaration de la variable "stockageInfoProduits" dans laquelle on met les key et values dans le local storage  
     let stockageInfoProduits = JSON.parse(window.localStorage.getItem('infoProduit')); // permet de déclarer stockageInfoProduits
     //permet de déclarer stockageInfoProduits
@@ -78,7 +74,7 @@ boutonProductToCart.addEventListener('click', function(){
         if(index!=null) {
             stockageInfoProduits[index].quantitePanierProduits = quantite.value; 
         }
-        else{ // (si il n'y a pas de produit d'enregistré dans le local storage)          
+        else{ // (if there is no product registered in local storage)          
                // var panierProduct = []
             var myPanierProduits = {
                 idPanierProduits : id,
@@ -88,16 +84,17 @@ boutonProductToCart.addEventListener('click', function(){
             stockageInfoProduits.push(myPanierProduits);
             window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduits)); //JSON.stringify c'est pour convertir les données au format JSON qui sont dans le localStorage en format javascript
         }
-    }else{   // (sinon aucun produit n'est enregistré , ajouter cet array)
-        var panierProduct = []
+    }else{   // (else no product registered, add this array)
+        let /*panierProduct*/ stockageInfoProduits = []
         var myPanierProduits = {
             idPanierProduits : id,
             quantitePanierProduits : quantite.value, 
             colorPanierProduits : selectColorsID.value, 
         }
-        panierProduct.push(myPanierProduits); 
-        window.localStorage.setItem('infoProduit', JSON.stringify(panierProduct)); 
-        console.log('boooo'); 
+        
+        stockageInfoProduits.push(myPanierProduits); 
+        window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduits/*panierProduct*/)); 
+
     }
 window.location.href= "cart.html";  
 });
