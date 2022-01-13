@@ -1,13 +1,37 @@
 // WARNING : IN PROCESS 
 //---------------------------------------
+//COLLECT QUERY STRING (récupération chaine de requète dans l'URL)  
+
+const queryString_url_id = window.location.search; 
+console.log(queryString_url_id); 
+
+   //URLSearchParams method
+const urlSearchParams = new URLSearchParams(queryString_url_id);
+console.log(urlSearchParams);
+
+const id = urlSearchParams.get("productId");
+console.log(id);
+
+/*fetch("http://localhost:3000/api/products"+id) 
+   .then(res => res.json())
+   .then(data => InsertInfoProduct(data))
+.catch(err => console.log(err))*/ 
+
+
+
 
 //----- Récupération des données du local storage - 
+
 
 let stockageInfoProduit = JSON.parse(window.localStorage.getItem('infoProduit'));
 
 
-//function insertInfoProduct(){
-for (let key in stockageInfoProduit){
+
+function InsertInfoProduct() {
+for (let key of stockageInfoProduit){
+
+  //  getProductsListCart(key.id) 
+
     const cartItems= document.getElementById('cart__items');
 
 
@@ -62,23 +86,46 @@ for (let key in stockageInfoProduit){
          divNewArticleContentSettingsQuantity.appendChild(inputsettingsQuantity)
          divNewArticleContentSettings.appendChild(divNewArticleContentSettingsDelete)
          divNewArticleContentSettingsDelete.appendChild(deleteItem)
-        
-         /* cartItems.innerHTML= key+"-",stockageInfoProduit[key]; */ 
-       /* nameTitlePrice.textContent= key.name; 
-        priceTitlePrice.textContent= "price"; 
-        quantiteSettingsQuantity.innerHTML= stockageInfoProduit[0].quantitePanierProduits; 
-        console.log (nameTitlePrice.textContent = key.price)
 
- text += stockageInfoProduit[key]; */ 
+
+        //async (id) => {
+            /*await*/ 
+            fetch('http://localhost:3000/api/products/' + key.id/*"415b7cacb65d43b2b5c1ff70f3393ad1"*/ )
+            .then(res => res.json())
+            .then(data => console.log(data.name))
+                .catch(err => console.log(err))
+        
+        const InsertInfoProduct = (product) => {
+            nameTitlePrice.textContent = product.name
+            priceTitlePrice.textContent = product.price + ' €'
+            newImage.src = product.imageUrl
+            newImage.setAttribute('alt', product.altTxt)
+          }
+        
+         /*cartItems.innerHTML= key+"-",stockageInfoProduit[key]; */ 
+       // nameTitlePrice.textContent= key.name; 
+        /*priceTitlePrice.textContent= "price"; 
+        quantiteSettingsQuantity.innerHTML= stockageInfoProduit[0].quantitePanierProduits; 
+        console.log (nameTitlePrice.textContent = key.price)*+ 
+
+ /* text += stockageInfoProduit[key]; */ 
 
  //fetch 
 //} 
+
 }
-
-
-
+}
+/*
+fetch ('http://localhost:3000/api/products/') 
+   .then(response => response.json())
+   .then(data => insertInfoProduct(data))
+.catch(error => console.log(error))
+*/ 
+console.log(InsertInfoProduct())
 console.log(stockageInfoProduit)
 console.log(stockageInfoProduit[0].colorPanierProduits)
+
+
 /*function insertInfoCartPage(){
     if(stockageInfoProduit != null) {//si le localstorage est différent de null alors récupérer les éléments
     
