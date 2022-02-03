@@ -68,7 +68,7 @@ boutonProductToCart.addEventListener('click', function(){
     if (stockageInfoProduits){ 
         for (const [i, valueStockage] of stockageInfoProduits.entries()) {  
                 if (valueStockage.idPanierProduits === id && valueStockage.colorPanierProduits === selectColorsID.value){  // si il y a déjà des produits d'enregistré dans le local storage 
-                index = i;
+                index = i; // valeur qui permet de dire quelle est la position du produit dans le local storage 
                 }
         }
         if(index!=null) {
