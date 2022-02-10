@@ -136,15 +136,39 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
  //fetch 
 //} 
 
+
+// ALLOW THE USER TO MODIFY QUANTITY
+
+const targetQuantitytoModify = inputsettingsQuantity.closest('input') // récupérer tous les inputs /quantités
+console.log(targetQuantitytoModify.value) // récupère les valeurs des inputs/quantity 
+// Les quantités récupérées -- que faire après ? 
+ for (var j=0; j</*inputsettingsQuantity*/targetQuantitytoModify.length; j++){
+     var input = inputsettingsQuantity[j]
+     input.addEventListener('change', quantityChanged)
+     window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduit));
+     window.location.reload(true)
+     alert('this is not')
+     return
+   
+ }
+    function quantityChanged(event){
+            var input = event.target
+ 
+            if (/*isNaN(input.value)|| */ input.value<= 0){
+                /*input.value=1;*/ 
+               
+                
+            }
+    }
      
-        inputsettingsQuantity.addEventListener('change', function(){ // modify Qty 
-        inputsettingsQuantity./*getAttribute()*/ textContent=this.nodeValue; 
+        //inputsettingsQuantity.addEventListener('change', function(){ // modify Qty 
+       // inputsettingsQuantity./*getAttribute()*/ textContent=this.nodeValue; 
 // quantite.value
-        console.log()
-        window.location.reload(true) // recharger la page
+      
+      //  window.location.reload(true) // recharger la page
 
         //position ok, modifier le local storage / attention pas dépasser 100 - if 
-        }); 
+      //  }); 
     
 
    // divNewArticleContentSettingsQuantity./*textContent */ getAttribute/*()*/  = modifyQty();
@@ -168,11 +192,12 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
        }); 
 
          // TOTAL PRICE
+        console.log(priceTitlePrice.textContent)
       // const updateTotalPrice = totalPrice.innerText;
-      // console.log(priceTitlePrice) // fait apparaitre 4 prix entre <p></p> -> trouver comment faire apparaitre les valeurs
+     // const getPrice = priceTitlePrice.closest('div > p') // récupérer tous les prix <p></p> -- trouver comment faire apparaitre les valeurs
        const totalQuantity = document.getElementById('totalQuantity');
             const total = 0; 
-            for (var j=0; j<stockageInfoProduit.length; j++){
+            for (var k=0; k<stockageInfoProduit.length; k++){
                 console.log(document.getElementsByClassName('cart__item__content__titlePrice')[0].lastChild.innerHTML/*.firstChild.nodeName*/ )
             }
 
