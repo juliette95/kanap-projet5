@@ -10,6 +10,10 @@ console.log(urlSearchParams);
 
 const id = urlSearchParams.get("productId");
 
+ //items total price and quantity var 
+
+ var total = 0; 
+ var quantityProduct = 0; 
 
 //----- retrieve local storage data -------------- 
 let stockageInfoProduit = JSON.parse(window.localStorage.getItem('infoProduit'));
@@ -17,11 +21,11 @@ let stockageInfoProduit = JSON.parse(window.localStorage.getItem('infoProduit'))
 function InsertInfoProduct() {
 for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui permet de récupérer la clef et la valeur
   //  getProductsListCart(key.id) 
-    var index = i; // récupérer l'index (position) du produit
+    
     const cartItems= document.getElementById('cart__items');
    
     const totalPrice = document.getElementById('totalPrice');
-    const errorMessage = document.getElementById('firstNameErrorMsg');
+    const totalQuantity = document.getElementById('totalQuantity')
 
 
     const newArticle = document.createElement("article")
@@ -76,39 +80,10 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
          divNewArticleContentSettings.appendChild(divNewArticleContentSettingsDelete)
          divNewArticleContentSettingsDelete.appendChild(deleteItem)
 
-         deleteItem.textContent = "Supprimer" //apparaît a chaque creation de div
-         quantiteSettingsQuantity.textContent = "Qté : "; 
-        //console.log()/*inputsettingsQuantity.value);*/ 
+         deleteItem.textContent = "Supprimer" //appears at each div creation 
+         quantiteSettingsQuantity.textContent = "Qté : ";  
 
-        /*function updateTotalQuantity(){
-            //const allQuantity = divNewArticleContentSettingsQuantity.inputsettingsQuantity; 
-            for (const i=0; i<divNewArticleContentSettingsQuantity.length; i++){
-                const quantity = allQuantity[i]
-                const quantityElement = quantity.inputsettingsQuantity
-                console.log(quantityElement)
-            }
-        }*/ 
-         
-       // divNewArticleContentSettingsQuantity.getElementById('quantiteSettingsQuantity'
-        /*function totalQuantityFunction(){
-            if (inputsettingsQuantity !== '' && field2 ''){
-          */ 
-
-          /*     
-                var total = parse
-            const totalQuantity = document.getElementById('totalQuantity');
-            const total = 0; 
-            for (var i=0; i<stockageInfoProduit.length; i++){
-                if()
-                    total= 
-            }
-            inputsettingsQuantity.value 
-        } */ 
-        /* totalQuantity.textContent= value; 
-         totalPrice.textContent=value; 
-         errorMessage.textContent=value; */
-
-            fetch('http://localhost:3000/api/products/' + key.idPanierProduits )
+            fetch('http://localhost:3000/api/products/' + key.idPanierProduits)
             .then(res => res.json())
             .then(data => InfoProduct(data))
                 .catch(err => console.log(err))
@@ -118,88 +93,52 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
             priceTitlePrice.textContent = product.price + ' €'
             newImage.src = product.imageUrl
             newImage.setAttribute('alt', product.altTxt)
+                // total calculation, use the API which returns the price according to idPanierProduit and complete it in totalPrice 
+            total+= product.price;
+            totalPrice.textContent = total; 
+           
           }
-
-
+                // quantity calculation, use the loop (for) to get back products and add them to the totalQuantity
+  
+        quantityProduct+=parseInt(key.quantitePanierProduits); //parseInt() to convert the argument in a string
+        totalQuantity.textContent = quantityProduct; 
         
-          //console.log(priceTitlePrice.textContent = product.price + ' €')
+        inputsettingsQuantity.addEventListener('change', function(){ // modify quantity
+            inputsettingsQuantity./*getattribute*/textContent=this.value; // quantite.value  
+            console.log()     
+            validNumber(i)
+            window.location.reload(true) // reload the page 
+            console.log(/*stockageInfoProduit[v].quantitePanierProduits*/ 'hello')
+            
+        }); 
 
-        
-         /*cartItems.innerHTML= key+"-",stockageInfoProduit[key]; */ 
-       // nameTitlePrice.textContent= key.name; 
-        /*priceTitlePrice.textContent= "price"; 
-        quantiteSettingsQuantity.innerHTML= stockageInfoProduit[0].quantitePanierProduits; 
-        console.log (nameTitlePrice.textContent = key.price)*+ 
-
- /* text += stockageInfoProduit[key]; */ 
-
- //fetch 
-//} 
-
-
-// ALLOW THE USER TO MODIFY QUANTITY
-
-const targetQuantitytoModify = inputsettingsQuantity.closest('input') // récupérer tous les inputs /quantités
-console.log(targetQuantitytoModify.value) // récupère les valeurs des inputs/quantity 
-// Les quantités récupérées -- que faire après ? 
- for (var j=0; j</*inputsettingsQuantity*/targetQuantitytoModify.length; j++){
-     var input = inputsettingsQuantity[j]
-     input.addEventListener('change', quantityChanged)
-     window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduit));
-     window.location.reload(true)
-     alert('this is not')
-     return
-   
- }
-    function quantityChanged(event){
-            var input = event.target
- 
-            if (/*isNaN(input.value)|| */ input.value<= 0){
-                /*input.value=1;*/ 
-               
-                
+        function validNumber(v){ // function in order that the quantite value does not exceed 100 
+            if (inputsettingsQuantity.value <= 100 ){
+                stockageInfoProduit[v].quantitePanierProduits = inputsettingsQuantity.value;  
+               // stockageInfoProduit[v].quantitePanierProduits
+                //console.log(stockageInfoProduit[v].quantitePanierProduits)
+                //window.location.reload(true) // reload the page 
+            } else {
+                alert('Number of items cannot exceed 100'); 
+                return false;  
             }
-    }
-     
-        //inputsettingsQuantity.addEventListener('change', function(){ // modify Qty 
-       // inputsettingsQuantity./*getAttribute()*/ textContent=this.nodeValue; 
-// quantite.value
-      
-      //  window.location.reload(true) // recharger la page
-
-        //position ok, modifier le local storage / attention pas dépasser 100 - if 
-      //  }); 
+        }
     
-
-   // divNewArticleContentSettingsQuantity./*textContent */ getAttribute/*()*/  = modifyQty();
-   
-       
-
+        
         deleteItem.addEventListener('click', function(){//delete item when click on "supprimer"
         stockageInfoProduit.splice(/*index*/i, 1/*,index*/); 
-        window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduit)); //recré un local storage avec les nouvelles info (élément supprimé)
-        window.location.reload(true) // recharger la page
-      
-        //1 index, 2 nm dd'élément à supprimer
-      
-       // var targetDeleteItem = deleteItem.closest() //cibler l’identifiant du produit à supprimer / de la quantité à modifier.
-        //var el = document.elementById ('div-03') 
-       /* var targetDeleteItem = */ 
-       //let itemDelete = divNewArticleContentSettingsQuantity.removeChild(deleteItem); 
-
-
-       // retrouver la position dans le local storage // splice dans local sotrage pour supprimer et récréer 
-       }); 
+        window.localStorage.setItem('infoProduit', JSON.stringify(stockageInfoProduit)); //create an other localsorage with new informations (delete element)
+        window.location.reload(true) // reload the page 
+        }); 
 
          // TOTAL PRICE
-        console.log(priceTitlePrice.textContent)
-      // const updateTotalPrice = totalPrice.innerText;
-     // const getPrice = priceTitlePrice.closest('div > p') // récupérer tous les prix <p></p> -- trouver comment faire apparaitre les valeurs
-       const totalQuantity = document.getElementById('totalQuantity');
+
+        /*console.log(priceTitlePrice.textContent)
             const total = 0; 
             for (var k=0; k<stockageInfoProduit.length; k++){
-                console.log(document.getElementsByClassName('cart__item__content__titlePrice')[0].lastChild.innerHTML/*.firstChild.nodeName*/ )
-            }
+                console.log(document.getElementsByClassName('cart__item__content__titlePrice')[0].lastChild.innerHTML/*.firstChild.nodeName*/ /*)
+            }*/ 
+
 
 }
 }
@@ -213,3 +152,55 @@ console.log(stockageInfoProduit)
 
 
 // utiliser dataset
+
+
+//----FORM----
+
+
+/*form.addEventListener('sumit',function(event){
+    event.preventDefault();
+
+    */ 
+// ROUTE POST - OBJET CONTACT ENVOYÉ AU SERVEUR 
+    // Doit contenir les champs firstName, Lastname, address, city, email 
+    // Le tableau des produits envoyé au back-end doit être un array de strings product-ID. 
+    // les types de ces champs et leur présence doivent être validés avant l'envoi des données au serveur
+function Formbase(f,l,a,c,e){
+    this.firstName=f;
+    this.lastName=l; 
+    this.address=a; 
+    this.city=c;
+    this.email=e;   
+}
+let newForm = new FormData (/* form values */ )
+   
+
+
+//fonction CREATION OBJECT NEW CONTACT 
+    // Créer un tableau de phrases 
+/*const newContact = {
+    name = "contactForm"
+    
+}; 
+
+fetch('http://localhost:3000/api/products/'+order) {
+    method: "POST", 
+    body: JSON.stringify(newContact), 
+    header: {
+        "Content-Type" : "application/json", 
+
+    }
+}*/ 
+
+// fonction VERIFY DATA via REGEX 
+
+//fonction RECUPERER ET ANALYSER LES DONNÉES 
+
+
+//fonction ERROR MESSAGE 
+    //const errorMessage = document.getElementById('firstNameErrorMsg');
+
+// click on submit 
+    //FormData.addEventListener('sumit',function(event){
+
+//});
