@@ -19,7 +19,7 @@ const id = urlSearchParams.get("productId");
 let stockageInfoProduit = JSON.parse(window.localStorage.getItem('infoProduit'));
 
 function InsertInfoProduct() {
-for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui permet de récupérer la clef et la valeur
+for (const [i/*retourne la position du produit dans tab*/,key/* retourne le produit*/] of stockageInfoProduit.entries()){ // entries = méthode qui permet de récupérer la clef et la valeur
   //  getProductsListCart(key.id) 
     
     const cartItems= document.getElementById('cart__items');
@@ -103,26 +103,21 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
         quantityProduct+=parseInt(key.quantitePanierProduits); //parseInt() to convert the argument in a string
         totalQuantity.textContent = quantityProduct; 
         
-        inputsettingsQuantity.addEventListener('change', function(){ // modify quantity
-            inputsettingsQuantity./*getattribute*/textContent=this.value; // quantite.value  
-            console.log()     
-            validNumber(i)
-            window.location.reload(true) // reload the page 
-            console.log(/*stockageInfoProduit[v].quantitePanierProduits*/ 'hello')
+        inputsettingsQuantity.addEventListener('change', function(){ // modify Qty 
+         
+            // quantite.value
+                    console.log(inputsettingsQuantity.value)
+                    //position ok, modifier le local storage / attention pas dépasser 100 - if 
+                    if(inputsettingsQuantity.value<=100){
+                            stockageInfoProduit[i].quantitePanierProduits= inputsettingsQuantity.value;
+                            console.log(stockageInfoProduit[i]);
+                            localStorage.setItem("infoProduit", JSON.stringify(stockageInfoProduit)); 
+                            window.location.reload(true);
             
-        }); 
-
-        function validNumber(v){ // function in order that the quantite value does not exceed 100 
-            if (inputsettingsQuantity.value <= 100 ){
-                stockageInfoProduit[v].quantitePanierProduits = inputsettingsQuantity.value;  
-               // stockageInfoProduit[v].quantitePanierProduits
-                //console.log(stockageInfoProduit[v].quantitePanierProduits)
-                //window.location.reload(true) // reload the page 
-            } else {
-                alert('Number of items cannot exceed 100'); 
-                return false;  
-            }
-        }
+                    }else if(inputsettingsQuantity.value>100){
+                            alert("la valeur n\' est pas conforme")
+                    }
+                    }); 
     
         
         deleteItem.addEventListener('click', function(){//delete item when click on "supprimer"
@@ -139,40 +134,91 @@ for (const [i,key] of stockageInfoProduit.entries()){ // entries = méthode qui 
                 console.log(document.getElementsByClassName('cart__item__content__titlePrice')[0].lastChild.innerHTML/*.firstChild.nodeName*/ /*)
             }*/ 
 
-
 }
 }
-
-// ATTENTION , MEME ID ET COULEUR 
-
 
 InsertInfoProduct()
 console.log(stockageInfoProduit)
-//console.log(stockageInfoProduit[1].colorPanierProduits)
-
-
-// utiliser dataset
-
 
 //----FORM----
 
+function form(){
 
-/*form.addEventListener('sumit',function(event){
-    event.preventDefault();
+const myForm = document.querySelector('form'); 
+const myFormButtonOrder = document.getElementById('order');
+const inputFirstName = document.getElementById('fisrtName');
+const inputLastName = document.getElementById('lastName'); 
+const inputAddress = document.getElementById('address');
+const inputCity = document.getElementById('city');
+const inputEmail = document.getElementById('email');
 
-    */ 
-// ROUTE POST - OBJET CONTACT ENVOYÉ AU SERVEUR 
+    // ROUTE POST - OBJET CONTACT ENVOYÉ AU SERVEUR 
     // Doit contenir les champs firstName, Lastname, address, city, email 
     // Le tableau des produits envoyé au back-end doit être un array de strings product-ID. 
     // les types de ces champs et leur présence doivent être validés avant l'envoi des données au serveur
-function Formbase(f,l,a,c,e){
+fetch('http://localhost:3000/api/products/order', { //retourne objet contact
+    method:"post",
+    headers: {
+        'Accept': 'application/json', 
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        //jsonBody)
+        "contact":{
+            firstName: '',
+            lastName:'',
+            address: 'xxx',
+            city: 'xxxx',
+            email: 'xxxx@xxxx'},
+        "products":
+        [], 
+    })
+})
+  .then(res => res.json()) // récupère la response
+  .then(data => window.location.href ='confirmation.html?order'=data.orderId)// permet redirection
+  .catch(err => console.log(err)) 
+
+
+/*myFormInput.addEventListener("input",function(e) {
+   var value = e.target.value; 
+   if (value.startsWith('hello ')){
+       isValid = true; 
+   } else {
+      // isValid = false; 
+       console.log("false ");
+   }
+   }); */ 
+ 
+//modify input email
+myForm.email.addEventListener('change', function(){
+ ValidEmail(this);
+}); 
+
+const ValidEmail = function(inputEmail){ // fonction VALIDATION DATA via REGEX - for email
+    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$','g'/*marker*/ )
+    
+    let testEmail = emailRegExp.test(inputEmail.value); 
+
+    let validationEmail = inputEmail.nextElementSibling; 
+    if (testEmail == true){
+    validationEmail.innerHTML = 'Adresse Valide' 
+    }else{
+    validationEmail.innerHTML = 'Adresse Non Valide';   
+    }
+}
+
+//validation order
+myFormButtonOrder.addEventListener("click", alert("Bonjour"));
+console.log(alert('bonjourno'))
+/*function Formbase(f,l,a,c,e){
     this.firstName=f;
     this.lastName=l; 
     this.address=a; 
     this.city=c;
     this.email=e;   
-}
-let newForm = new FormData (/* form values */ )
+}*/ 
+
+/*let newForm = new FormData */ /* form values */ 
    
 
 
@@ -182,17 +228,7 @@ let newForm = new FormData (/* form values */ )
     name = "contactForm"
     
 }; 
-
-fetch('http://localhost:3000/api/products/'+order) {
-    method: "POST", 
-    body: JSON.stringify(newContact), 
-    header: {
-        "Content-Type" : "application/json", 
-
-    }
-}*/ 
-
-// fonction VERIFY DATA via REGEX 
+*/
 
 //fonction RECUPERER ET ANALYSER LES DONNÉES 
 
@@ -204,3 +240,4 @@ fetch('http://localhost:3000/api/products/'+order) {
     //FormData.addEventListener('sumit',function(event){
 
 //});
+}
